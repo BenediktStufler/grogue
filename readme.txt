@@ -1,4 +1,4 @@
-m-- Generate Random blOckstable Graphs
+grogue -- Generate Random Blockstable Graphs
 
 * 
 * 1. Introduction
