@@ -1,4 +1,4 @@
-grogue -- Generate Random blOckstable Graphs
+m-- Generate Random blOckstable Graphs
 
 * 
 * 1. Introduction
@@ -6,7 +6,7 @@ grogue -- Generate Random blOckstable Graphs
 
 This project implements efficient samplers for random connected graphs from selected subcritical block-stable classes. It is based on an R-enriched tree encoding of such graphs and a resulting coupling with simply generated trees. This way, graphs may be viewed as blow-ups of trees, where for each vertex v with children v1, ..., v_k we remove the edges between v and its children and add new edges with endpoints in {v, v_1, ..., v_k} according a random choice that only depends on the outdegree k. These edges are called the decoration of v.
 
-The algorithm proceeds in two steps. First, it generates the underlying simply generated tree using a multithreaded version of an algorithm by Devroye (2012, SIAM Journal of Computing). Second, it generates the decorations of vertices v with small outdegree using precomputed probability weights. The decorations of the remaining vertices are generated using a multi-threaded coupon collection algorithm. Each thread uses a Boltzmann sampling procedure to generate randomly sized decorations which are added to the coupon list if the size matches the outdegree of one of the vertices missing a decoration. The parameter for the Boltzmann sampler is adjusted so that the roughly expected size matches the range of the outdegrees.
+The algorithm proceeds in two steps. First, it generates the underlying simply generated tree using a multithreaded version of an algorithm by Devroye (2012, SIAM Journal of Computing). Second, it generates the decorations of vertices in two phases. In the first phase, the decoration of vertices with small outdegree are generated using precomputed probability weights. In the second phase, decorations of the remaining vertices with large outdegree are generated using a multi-threaded coupon collection algorithm. Each thread uses a Boltzmann sampling procedure to generate randomly sized decorations which are added to the coupon list if the size matches the outdegree of one of the vertices missing a decoration. The parameter for the Boltzmann sampler is adjusted so that the roughly expected size matches the range of the outdegrees.
 
 The program may be instructed to output lists of vertex parameters in breadth-first-search order of the corresponding tree (degree profile, height profile, closeness centrality).
 
