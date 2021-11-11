@@ -13,8 +13,9 @@ The program may be instructed to output lists of vertex parameters in breadth-fi
 Currently, the following graph classes are supported:
 	- Trees
 	- Cactus Graphs 
+	- Outerplanar Graphs
 
-Support for outerplanar graphs will be added soon.
+Support for series-parallel graphs will be added later on.
 
 
 *
