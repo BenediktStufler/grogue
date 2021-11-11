@@ -21,22 +21,41 @@ struct cmdarg
 
 	char *outfile;				// file to which we write graph
 	int Toutfile;				// has value been set by the user?
+	int Aoutfile;				// does filename contain %?
+	char Woutfile;				// write mode ('w' / 'a' for write / append)
+
 
 	char *heightfile;			// file to which we write height profile
 	int Theightfile;			// has value been set by the user?
+	int Aheightfile;			// does filename contain %?
+	char Wheightfile;			// write mode ('w' / 'a' for write / append)
+
+	char *maxheightfile;			// file to which we write maximal height
+	int Tmaxheightfile;			// has value been set by the user?
+	int Amaxheightfile;			// does filename contain %?
+	char Wmaxheightfile;			// write mode ('w' / 'a' for write / append)
+
+	char *maxdegfile;			// file to which we write maximal vertex degree
+	int Tmaxdegfile;			// has value been set by the user?
+	int Amaxdegfile;			// does filename contain %?
+	char Wmaxdegfile;			// write mode ('w' / 'a' for write / append)
 
 	char *degfile;				// file to which we write 
 	int Tdegfile;				// has value been set by the user?
+	int Adegfile;				// does filename contain %?
+	char Wdegfile;				// write mode ('w' / 'a' for write / append)
+
 
 	char *profile;				// file to which we write outdegree statistics
 	int Tprofile;				// has value been set by the user?
-
-	char *pdprofile;			// file to which we write degree statistics
-	char Tpdprofile;			// has value been set by the user?
+	int Aprofile;				// does filename contain %?
+	char Wprofile;				// write mode ('w' / 'a' for write / append)
 
 	char *centfile;				// file to which we write closeness centrality
-								// of vertices
+						// of vertices
 	int Tcentfile;				// has value been set by the user?
+	int Acentfile;				// does filename contain %?
+	char Wcentfile;				// write mode ('w' / 'a' for write / append)
 
 	char *infile;				// file from which we read the graph
 	int Tinfile;				// has value been set by the user?
@@ -122,13 +141,15 @@ unsigned int getnumcores(void) {
 static struct argp_option options[] =
 {
 	{"size",		's', "SIZE", 0, 	"Generate a connected graph with SIZE vertices."},
-	{"outfile",		'o', "OUTFILE", 0, 	"Output simulatd graph in graphml format to OUTFILE."},
+	{"outfile",		'o', "OUTFILE", 0, 	"Output simulated graph in graphml format to OUTFILE."},
 	{"graphclass",		'g', "GRAPHCLASS", 0, 	"Sample graphs from GRAPHCLASS. Currently supported: 'tree' for the class of trees, 'cacti' for the class of cactus graphs, 'outer' for the class of outerplanar graphs"},
-	{"num", 		'N', "NUM", 0, 		"Simulate NUM many samples. Requires the use of the % symbol in all specified output filenames. For example, --num=100 --outfile=graph%.graphml will create the files graph001.graphml, graph002.graphml, ..., graph100.graphml."},
+	{"num", 		'N', "NUM", 0, 		"Simulate NUM many samples. Requires the use of the % symbol in all specified output filenames. For example, --num=100 --outfile=graph%.graphml will create the files graph001.graphml, graph002.graphml, ..., graph100.graphml. If the filename does not contain a % symbol then the file will be opend in append mode."},
 	{"threads", 	't', "THREADS", 0,	"Distribute the workload on THREADS many threads. The default value is the number of CPU cores."}, 
 	{"centfile",  	'c', "CENTFILE", 0, "Output a list of the vertices' closeness centrality to CENTFILE."},
 	{"degfile",  	'd', "DEGFILE", 0, 	"Output a list of the vertices' degrees to DEGFILE."},
 	{"heightfile",  'h', "HEIGHTFILE", 0, "Output the height profile to HEIGHTFILE."},
+	{"maxdegfile",  'D', "MAXDEGFILE", 0, 	"Output maximal vertex degree to  MAXDEGFILE."},
+	{"maxheightfile",  'H', "MAXHEIGHTFILE", 0, "Output maximal vertex height to MAXHEIGHTFILE."},
 	{"inputfile",  'i', "INPUTFILE", 0, "Read a _connected_ graph from file INFILE (graphml format) instead of generating it at random."},
 	{"profile",  	'p', "PROFILE", 0, 	"Output the degree profile to the file PROFILE."},
 	{"vertex",  	'v', "VERTEX", 0, 	"Specify a root vertex. Used in conjunction with the --inputfile parameter. "},
@@ -233,6 +254,14 @@ static error_t parse_opt(int key, char *arg, struct argp_state *state) {
 			}
 
 			break;
+		case 'D':
+			arguments->maxdegfile = arg;
+			arguments->Tmaxdegfile = 1;
+			break;
+		case 'H':
+			arguments->maxheightfile = arg;
+			arguments->Tmaxheightfile = 1;
+			break;
 		case 'o':
 			arguments->outfile = arg;
 			arguments->Toutfile = 1;
@@ -296,25 +325,52 @@ static char doc[] = "grogue -- Generate Random blOck-stable Graphs";
 static struct argp argp = {options, parse_opt, args_doc, doc};
 
 
+/*
+	Checks whether a string contains the symbol %
+*/
+int checkper(char *str) {
+	int flag=0;
+	char *c;
+
+	if(str) {
+		for(c = str; *c != '\0'; c++) {
+			if( *c == '\045' ) {
+				flag=1;
+				break;
+			}
+		}
+	}
+
+	return flag;
+}
 
 int getcmdargs(struct cmdarg *comarg, int argc, char **argv) {
-	char *c;
-	int flag;
-
 	/* set command line arguments defaults */
 
 	// default filenames are NULL and have not been set by the user yet
 	comarg->outfile = NULL;
 	comarg->Toutfile = 0;
+	comarg->Aoutfile = 0;
 
 	comarg->degfile = NULL;
 	comarg->Tdegfile = 0;
+	comarg->Adegfile = 0;
+
+	comarg->maxdegfile = NULL;
+	comarg->Tmaxdegfile = 0;
+	comarg->Amaxdegfile = 0;
 
 	comarg->heightfile = NULL;
 	comarg->Theightfile = 0;
+	comarg->Aheightfile = 0;
+
+	comarg->maxheightfile = NULL;
+	comarg->Tmaxheightfile = 0;
+	comarg->Amaxheightfile = 0;
 
 	comarg->profile = NULL;
 	comarg->Tprofile = 0;
+	comarg->Aprofile = 0;
 
 	comarg->centfile = NULL;
 	comarg->Tcentfile = 0;
@@ -346,79 +402,34 @@ int getcmdargs(struct cmdarg *comarg, int argc, char **argv) {
 
 	/* further sanity checks concerning cross dependencies among parameters */
 
-	// if the --num parameter was set then each output filename 
-	// needs to contain the % symbol.
-	if(comarg->Tnum) {
-		if( comarg->Toutfile ) {
-			flag=1;
-			for(c = comarg->outfile; *c != '\0'; c++) {
-				if( *c == '\045' ) {
-					flag=0;
-					break;
-				}
-			}
-			if( flag ) {
-				fprintf(stderr, "Error: Setting the --num parameter requires you to include the %% symbol in the --outfile parameter (and all other output filenames). It will be replaced by the number of the sample.\n");
-				exit(-1);
-			}
-		}
-
-		if( comarg->Tprofile ) {
-			flag=1;
-			for(c = comarg->profile; *c != '\0'; c++) {
-				if( *c == '\045' ) {
-					flag=0;
-					break;
-				}
-			}
-			if( flag ) {
-				fprintf(stderr, "Error: Setting the --num parameter requires you to include the %% symbol in the --profile parameter (and all other output filenames). It will be replaced by the number of the sample.\n");
-				exit(-1);
-			}
-		}
-
-		if( comarg->Tcentfile ) {
-			flag=1;
-			for(c = comarg->centfile; *c != '\0'; c++) {
-				if( *c == '\045' ) {
-					flag=0;
-					break;
-				}
-			}
-			if( flag ) {
-				fprintf(stderr, "Error: Setting the --num parameter requires you to include the %% symbol in the --centfile parameter (and all other output filenames). It will be replaced by the number of the sample.\n");
-				exit(-1);
-			}
-		}
-
-		if( comarg->Tdegfile ) {
-			flag=1;
-			for(c = comarg->degfile; *c != '\0'; c++) {
-				if( *c == '\045' ) {
-					flag=0;
-					break;
-				}
-			}
-			if( flag ) {
-				fprintf(stderr, "Error: Setting the --num parameter requires you to include the %% symbol in the --degfile parameter (and all other output filenames). It will be replaced by the number of the sample.\n");
-				exit(-1);
-			}
-		}
-
-		if( comarg->Theightfile ) {
-			flag=1;
-			for(c = comarg->heightfile; *c != '\0'; c++) {
-				if( *c == '\045' ) {
-					flag=0;
-					break;
-				}
-			}
-			if( flag ) {
-				fprintf(stderr, "Error: Setting the --num parameter requires you to include the %% symbol in the --heightfile parameter (and all other output filenames). It will be replaced by the number of the sample.\n");
-				exit(-1);
-			}
-		}
-
+	// Check for each output filename whether it contains a % symbol
+	if( comarg->Toutfile ) {
+		comarg->Aoutfile = checkper(comarg->outfile);
+		comarg->Woutfile = (comarg->Tnum && !(comarg->Aoutfile)) ?'a' :'w';
+	}
+	if( comarg->Tprofile ) {
+		comarg->Aprofile = checkper(comarg->profile);
+		comarg->Wprofile = (comarg->Tnum && !(comarg->Aprofile)) ?'a' :'w';
+	}
+	if( comarg->Tcentfile ) {
+		comarg->Acentfile = checkper(comarg->centfile);
+		comarg->Wcentfile = (comarg->Tnum && !(comarg->Acentfile)) ?'a' :'w';
+	}
+	if( comarg->Tdegfile ) {
+		comarg->Adegfile = checkper(comarg->degfile);
+		comarg->Wdegfile = (comarg->Tnum && !(comarg->Adegfile)) ?'a' :'w';
+	}
+	if( comarg->Tmaxdegfile ) {
+		comarg->Amaxdegfile = checkper(comarg->maxdegfile);
+		comarg->Wmaxdegfile = (comarg->Tnum && !(comarg->Amaxdegfile)) ?'a' :'w';
+	}
+	if( comarg->Theightfile ) {
+		comarg->Aheightfile = checkper(comarg->heightfile);
+		comarg->Wheightfile = (comarg->Tnum && !(comarg->Aheightfile)) ?'a' :'w';
+	}
+	if( comarg->Tmaxheightfile ) {
+		comarg->Amaxheightfile = checkper(comarg->maxheightfile);
+		comarg->Wmaxheightfile = (comarg->Tnum && !(comarg->Amaxheightfile)) ?'a' :'w';
 	}
 
 	return 0;

@@ -299,7 +299,7 @@ INT ***cactideco(INT *degprofile, INT max, int numThreads, gsl_rng **rgens) {
 
 
 	// allocate space for pointers to graphs
-	INT ***deco = calloc(sizeof(INT **), max+1);
+	INT ***deco = calloc(max+1, sizeof(INT **));
 	if(deco == NULL) {
 		// memory allocation error
 		fprintf(stderr, "Memory allocation error in function cactideco\n");
@@ -308,14 +308,14 @@ INT ***cactideco(INT *degprofile, INT max, int numThreads, gsl_rng **rgens) {
 	deco[0] = NULL;	// no graphs of size zero
 	for(i=1; i<=max; i++) {
 		if(degprofile[i] >0) {
-			deco[i] = calloc(sizeof(INT *), degprofile[i]);
+			deco[i] = calloc(degprofile[i], sizeof(INT *));
 			if(deco[i] == NULL) {
 				// memory allocation error
 				fprintf(stderr, "Memory allocation error in function cactideco\n");
 				exit(-1);
 			}
 			for(j=0; j<degprofile[i]; j++) {
-				deco[i][j] = calloc(sizeof(INT), i+1);
+				deco[i][j] = calloc(i+1, sizeof(INT));
 				if(deco[i][j] == NULL) {
 					// memory allocation error
 					fprintf(stderr, "Memory allocation error in function cactideco\n");
@@ -357,7 +357,7 @@ INT ***cactideco(INT *degprofile, INT max, int numThreads, gsl_rng **rgens) {
 
 
 	if(counter > 0) {
-		INT *truncdegprofile = calloc(sizeof(INT), max+1); // initializes to zero
+		INT *truncdegprofile = calloc(max+1, sizeof(INT)); // initializes to zero
 		if(truncdegprofile  == NULL) {
 			// memory allocation error
 			fprintf(stderr, "Memory allocation error in function cactideco\n");

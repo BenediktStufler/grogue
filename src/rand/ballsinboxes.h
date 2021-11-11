@@ -270,7 +270,7 @@ INT **threadedbinb(INT n, INT m, mpfr_t *xi, unsigned int numThreads, gsl_rng **
 
 
 	// pack list of arguments
-	argList = calloc(sizeof(struct targ), numThreads);
+	argList = calloc(numThreads, sizeof(struct targ));
 	for(i=0; i<numThreads; i++) {
 		argList[i].n = n;
 		argList[i].max = n;
@@ -288,7 +288,7 @@ INT **threadedbinb(INT n, INT m, mpfr_t *xi, unsigned int numThreads, gsl_rng **
 
 
 	/* launch threads */
-	th = calloc(sizeof(pthread_t), numThreads);
+	th = calloc(numThreads, sizeof(pthread_t));
 	for(i=0; i<numThreads; i++) {
 		if(pthread_create(&th[i], NULL, &ballsinboxes, &argList[i] )) {
 			fprintf(stderr, "Error launching thread number %"STR(FINT)"\n", i);

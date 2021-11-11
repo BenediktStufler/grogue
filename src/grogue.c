@@ -50,19 +50,19 @@
  * define data types and format strings for floats and large integers
  * keep in mind that the data type int may occupy only 32bit on 64bit machines
  *
- * DOUBLE: the data type used for storing probabilities
- * PREC: precision (in number of bits) used for intermediate floating point
- *       calculations
- * INT: the data type that needs to be able to store the NUMBER of vertices
- * INTD: the data type that needs to be able to store the sum of distances
+ * DOUBLE: data type used for storing probabilities
+ * PREC:   precision (in number of bits) used for intermediate floating point
+ *         calculations
+ * INT:    data type that needs to be able to store the NUMBER of vertices
+ * INTD:   the data type that needs to be able to store the sum of distances
  *	   from a single vertex to the rest
  */
 
 #define DOUBLE long double
 #define FDOUBLE 17.17Lf
 
-#define INT unsigned long int
-#define FINT lu
+#define INT long int
+#define FINT ld
 
 #define INTD unsigned long long
 #define FINTD llu
@@ -163,11 +163,13 @@
  * precomputed probability weights for graph classes
  */
 #include "prec/cacti.h"
+#include "prec/outer.h"
 
 /*
  * simulate random graphs from block-stable graph classes
  */
 #include "rand/cacti.h"
+#include "rand/outer.h"
 #include "rand/block.h"
 
 

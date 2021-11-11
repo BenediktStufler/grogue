@@ -33,6 +33,8 @@ struct vertex {
 struct graph {				// holds a graph; optional arguments need to 
 							// be initialized with NULL
 	INT num;				// the number of vertices
+	INT maxdeg;			// maximum degree
+	INT maxheight;			// maximum height
 	struct vertex *root;	// root vertex (optional)
 	struct vertex **arr;	// dynamically allocated array with pointers
    							// to all vertices 
@@ -71,6 +73,8 @@ struct graph* newgraph(INT num) {
 	}
 
 	G->num = num;
+	G->maxheight = 0;
+	G->maxdeg = 0;
 	G->root = NULL;
 	G->bfs = NULL;
 	G->dfs = NULL;
@@ -368,7 +372,6 @@ struct vertex **dfsorder(struct graph *G, struct vertex *root) {
 // calculate bfsorder of vertices
 // setheight --> sets height parameter for each vertex
 // setdeg --> sets deg = degree for each vertex
-// setoutdeg --> sets deg = outdegree for each vertex
 struct vertex **bfsorder(struct graph *G, struct vertex *root, int setdeg, int setheight) {
 	struct vertex **bfs;
 	struct vertex *v;
@@ -400,15 +403,27 @@ struct vertex **bfsorder(struct graph *G, struct vertex *root, int setdeg, int s
 	pushr(qu, root);
 
 	root->x = 0;	// mark root as queued
-	if(setheight) root->height = 0;	// set height of root to zero
+	if(setheight) {
+		root->height = 0;	// set height of root to zero
+		G->maxheight = 0;
+	}
+	if(setdeg) {
+		G->maxdeg = 0;
+	}
 	for(i=0; qu->li != NULL; i++) {
 		v = popl(qu);
 		bfs[i] = v;
 		for(li = v->qu->li; li != NULL; li = li->ne) {
-			if(setdeg) v->deg += 1; 	// increment vertex degree
+			if(setdeg) {
+				v->deg += 1; 	// increment vertex degree
+				if(v->deg > G->maxdeg) G->maxdeg = v->deg;
+			}
 			// check if vertex was visited before
 			if(li->ve->x) {
-				if(setheight) li->ve->height = v->height + 1;	// set height
+				if(setheight) {
+					li->ve->height = v->height + 1;	// set height
+					if(li->ve->height > G->maxheight) G->maxheight = li->ve->height;
+				}
 				pushr(qu, li->ve);
 				li->ve->x = 0;	// mark vertex as queued
 			}

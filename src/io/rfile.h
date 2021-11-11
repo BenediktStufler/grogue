@@ -23,28 +23,40 @@ int rfile(struct cmdarg *comarg) {
 		return -1;
 	}
 
-	/* output degree sequence if requested */
-	if( comarg->Tdegfile ) {
-		outdegseq(G, comarg->degfile);
-	}
 	
 	/* output degree profile if requested */
 	if( comarg->Tprofile ) {
 		degprofile = makedegprofile(G);	// assumes that the deg parameters
 										// have already been set
-		outdegprofile(degprofile, G->num, comarg->profile);
+		outdegprofile(degprofile, G->num, comarg->profile, 'w');
 		free(degprofile);
 	}
 	
+	/* output degree sequence if requested */
+	if( comarg->Tdegfile ) {
+		outdegseq(G, comarg->degfile, 'w');
+	}
+
+	/* output maximum degree if requested */
+	if( comarg->Tmaxdegfile ) {
+		outmaxdeg(G, comarg->maxdegfile, 'w');
+	}
+
 	/* output height sequence if requested */
 	if( comarg->Theightfile ) {
-		outheightseq(G, comarg->heightfile);
+		outheightseq(G, comarg->heightfile, 'w');
 	}
+
+	/* output maximal height if requested */
+	if( comarg->Tmaxheightfile ) {
+		outmaxheight(G, comarg->maxheightfile, 'w');
+	}
+
 
 	/* Calculate closeness centrality if requested */
 	if( comarg->Tcentfile ) {
 		threadedcentrality(G, 0, G->num, comarg->threads);
-		outcent(G, comarg->centfile);
+		outcent(G, comarg->centfile, 'w');
 	}
 
 

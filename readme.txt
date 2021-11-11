@@ -20,27 +20,41 @@ Support for outerplanar graphs will be added soon.
 *
 * 2. Usage
 *
-
-Usage: grogue [OPTION...] 
 grogue -- Generate Random blOck-stable Graphs
+
+Usage: grogue [-?V] [-c CENTFILE] [-d DEGFILE] [-D MAXDEGFILE] [-g GRAPHCLASS]
+            [-h HEIGHTFILE] [-H MAXHEIGHTFILE] [-i INPUTFILE] [-N NUM]
+            [-o OUTFILE] [-p PROFILE] [-r RANDGEN] [-s SIZE] [-S SEED]
+            [-t THREADS] [-v VERTEX] [--centfile=CENTFILE] [--degfile=DEGFILE]
+            [--maxdegfile=MAXDEGFILE] [--graphclass=GRAPHCLASS]
+            [--heightfile=HEIGHTFILE] [--maxheightfile=MAXHEIGHTFILE]
+            [--inputfile=INPUTFILE] [--num=NUM] [--outfile=OUTFILE]
+            [--profile=PROFILE] [--randgen=RANDGEN] [--size=SIZE] [--seed=SEED]
+            [--threads=THREADS] [--vertex=VERTEX] [--help] [--usage]
+            [--version] 
 
   -c, --centfile=CENTFILE    Output a list of the vertices' closeness
                              centrality to CENTFILE.
   -d, --degfile=DEGFILE      Output a list of the vertices' degrees to DEGFILE.
                             
+  -D, --maxdegfile=MAXDEGFILE   Output maximal vertex degree to  MAXDEGFILE.
   -g, --graphclass=GRAPHCLASS   Sample graphs from GRAPHCLASS. Currently
                              supported: 'tree' for the class of trees, 'cacti'
                              for the class of cactus graphs, 'outer' for the
                              class of outerplanar graphs
   -h, --heightfile=HEIGHTFILE   Output the height profile to HEIGHTFILE.
+  -H, --maxheightfile=MAXHEIGHTFILE
+                             Output maximal vertex height to MAXHEIGHTFILE.
   -i, --inputfile=INPUTFILE  Read a _connected_ graph from file INFILE (graphml
                              format) instead of generating it at random.
   -N, --num=NUM              Simulate NUM many samples. Requires the use of the
                              % symbol in all specified output filenames. For
                              example, --num=100 --outfile=graph%.graphml will
                              create the files graph001.graphml,
-                             graph002.graphml, ..., graph100.graphml.
-  -o, --outfile=OUTFILE      Output simulatd graph in graphml format to
+                             graph002.graphml, ..., graph100.graphml. If the
+                             filename does not contain a % symbol then the file
+                             will be opend in append mode.
+  -o, --outfile=OUTFILE      Output simulated graph in graphml format to
                              OUTFILE.
   -p, --profile=PROFILE      Output the degree profile to the file PROFILE.
   -r, --randgen=RANDGEN      Use the pseudo random generator RANDGEN. Available
@@ -71,7 +85,20 @@ Report bugs to <benedikt.stufler@posteo.net>.
 * 3. Example
 *
 
-grogue -g cacti -s 10 -o /dev/stdout
+Here are some examples for the Linux command line:
+
+Simulate a random outerplanar graph with 10 vertices and write the output to the terminal:
+
+grogue -g outer -s 10 -o /dev/stdout
+
+
+Simulate ten cactus graphs with one million vertices each and write them and their degree sequences to disk:
+
+grogue -g cacti -s 1000000  -N 10 -o graph%.graphml -d deglist%.txt
+
+
+Simulate 1000 cactus graphs with 1000 vertices each and form the average of their heights. Requires the datamash package.
+./grogue -g cacti -s 1000 -N 1000 -H /dev/stdout | datamash mean 1
 
 
 
