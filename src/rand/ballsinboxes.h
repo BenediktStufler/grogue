@@ -210,14 +210,16 @@ INT **threadedbinb(INT n, INT m, mpfr_t *xi, unsigned int numThreads, gsl_rng **
 		fprintf(stderr, "Memory allocation error in function threadedbinb\n");
 		exit(-1);
 	}
+	/*
 	for(i=0; i<num; i++) {
-		N[i] = (INT *)  calloc(n, sizeof(INT*));
+		N[i] = (INT *)  calloc(n, sizeof(INT));
 		if(N[i] == NULL) {
 			// memory allocation error
 			fprintf(stderr, "Memory allocation error in function threadedbinb\n");
 			exit(-1);
 		}
 	}
+	*/
 
 	// preprocess the sequence q[] given by 
 	// q[0] = xi[0]
@@ -403,14 +405,17 @@ INT **threadedbinb_prec(INT n, INT m, double *q, unsigned int max, unsigned int 
 		fprintf(stderr, "Memory allocation error in function threadedbinb\n");
 		exit(-1);
 	}
+	/*
 	for(i=0; i<num; i++) {
-		N[i] = (INT *)  calloc(n, sizeof(INT*));
+		N[i] = (INT *)  calloc(n, sizeof(INT));
+
 		if(N[i] == NULL) {
 			// memory allocation error
 			fprintf(stderr, "Memory allocation error in function threadedbinb\n");
 			exit(-1);
 		}
 	}
+	*/
 
 
 	// pack list of arguments
@@ -455,6 +460,7 @@ INT **threadedbinb_prec(INT n, INT m, double *q, unsigned int max, unsigned int 
 	free(argList);
 	free(th);
 
+
 	return N; 
 }
 
@@ -468,6 +474,7 @@ INT *tbinb_prec(INT n, INT m, double *q, unsigned int max, unsigned int numThrea
 	INT *single;
 	multi = threadedbinb_prec(n,m,q,max,numThreads,rgens,1);
 	single = multi[0];
+
 	free(multi);
 	return single;
 }

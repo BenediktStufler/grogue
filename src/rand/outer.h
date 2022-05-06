@@ -133,6 +133,7 @@ struct graph *outerbij(INT *D, struct outerdec **odec, INT len, INT max) {
 	}
 
 	free(v);
+	free(estack);
 	return G;
 
 }

@@ -6,7 +6,7 @@ int grog(struct cmdarg *comarg, gsl_rng **rgens) {
 	INT *D = NULL;				// degree sequence of tree
 	INT *Gdegprofile = NULL;		// degree profile of graph
 	INT counter;
-	char *cname;
+	char *cname = NULL;
 	struct graph *G = NULL;
 	INT i,j;
 
@@ -103,6 +103,7 @@ int grog(struct cmdarg *comarg, gsl_rng **rgens) {
 		} else if(comarg->method == 3) {	// class of outerplanar graphs
 			/* generate degree profile */
 			degprofile = tbinb_prec(comarg->size, comarg->size-1, outerq, outermax, comarg->threads, rgens);
+
 
 			// set maximum
 			for(i=0, max=0; i<comarg->size; i++) 
@@ -231,6 +232,7 @@ int grog(struct cmdarg *comarg, gsl_rng **rgens) {
 				free(cname);
 			}
 		}
+
 
 		// clean up
 		if(G != NULL) free_graph(G);
