@@ -8,7 +8,7 @@ This project implements efficient samplers for random connected graphs from sele
 
 The algorithm proceeds in two steps. First, it generates the underlying simply generated tree using a multithreaded version of an algorithm by Devroye (2012, SIAM Journal of Computing). Second, it generates the decorations of vertices in two phases. In the first phase, the decoration of vertices with small outdegree are generated using precomputed probability weights. In the second phase, decorations of the remaining vertices with large outdegree are generated using a multi-threaded coupon collection algorithm. Each thread uses a Boltzmann sampling procedure to generate randomly sized decorations which are added to the coupon list if the size matches the outdegree of one of the vertices missing a decoration. The parameter for the Boltzmann sampler is adjusted so that the roughly expected size matches the range of the outdegrees.
 
-The program may be instructed to output lists of vertex parameters in breadth-first-search order of the corresponding tree (degree profile, height profile, closeness centrality).
+The program may be instructed to output lists of vertex parameters (degree profile, height profile, closeness centrality) of the generated graph, ordered according to a breadth-first-search of the underlying tree.
 
 Currently, the following graph classes are supported:
 	- Trees
