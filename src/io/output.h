@@ -6,7 +6,7 @@
 /*
  * Write vertex outdegree profile to file
  */
-int outdegprofile(INT *N, INT size, char *outfile, char mode) {
+int outdegprofile(INT *N, INT size, char *outfile, char *mode) {
 	FILE *outstream = NULL;	
 	INT i, j;
 
@@ -14,7 +14,7 @@ int outdegprofile(INT *N, INT size, char *outfile, char mode) {
 	if(outfile == NULL || strlen(outfile) == 0) {
 		outstream = stdout;
 	} else {
-		outstream = fopen(outfile, &mode);
+		outstream = fopen(outfile, mode);
 		if(outstream == NULL) {
 			fprintf(stderr, "Error opening output file %s.\n", outfile);
 			return(-1);
@@ -144,14 +144,14 @@ char *convname(char *outfile, unsigned int counter, unsigned int num, int Tnum) 
 /*
  * Output graph to graphml format
  */
-int outgraph(struct graph *G, char *outfile, char mode) {
+int outgraph(struct graph *G, char *outfile, char *mode) {
 	FILE *outstream = NULL;	
 
 	// open output file if necessary
 	if(outfile == NULL || strlen(outfile) == 0) {
 		outstream = stdout;
 	} else {
-		outstream = fopen(outfile, &mode);
+		outstream = fopen(outfile, mode);
 		if(outstream == NULL) {
 			fprintf(stderr, "Error opening output file %s.\n", outfile);
 			exit(-1);
@@ -170,7 +170,7 @@ int outgraph(struct graph *G, char *outfile, char mode) {
 /*
  * Output degree sequence
  */
-int outdegseq(struct graph *G, char *outfile, char mode) {
+int outdegseq(struct graph *G, char *outfile, char *mode) {
 	FILE *outstream = NULL;	
 	INT i;
 
@@ -178,7 +178,7 @@ int outdegseq(struct graph *G, char *outfile, char mode) {
 	if(outfile == NULL || strlen(outfile) == 0) {
 		outstream = stdout;
 	} else {
-		outstream = fopen(outfile, &mode);
+		outstream = fopen(outfile, mode);
 		if(outstream == NULL) {
 			fprintf(stderr, "Error opening output file %s.\n", outfile);
 			exit(-1);
@@ -204,7 +204,7 @@ int outdegseq(struct graph *G, char *outfile, char mode) {
 /*
  * Output height sequence
  */
-int outheightseq(struct graph *G, char *outfile, char mode) {
+int outheightseq(struct graph *G, char *outfile, char *mode) {
 	FILE *outstream = NULL;	
 	INT i;
 
@@ -212,7 +212,7 @@ int outheightseq(struct graph *G, char *outfile, char mode) {
 	if(outfile == NULL || strlen(outfile) == 0) {
 		outstream = stdout;
 	} else {
-		outstream = fopen(outfile, &mode);
+		outstream = fopen(outfile, mode);
 		if(outstream == NULL) {
 			fprintf(stderr, "Error opening output file %s.\n", outfile);
 			exit(-1);
@@ -238,14 +238,14 @@ int outheightseq(struct graph *G, char *outfile, char mode) {
 /*
  * Output maximal height
  */
-int outmaxheight(struct graph *G, char *outfile, char mode) {
+int outmaxheight(struct graph *G, char *outfile, char *mode) {
 	FILE *outstream = NULL;	
 
 	// open output file if necessary
 	if(outfile == NULL || strlen(outfile) == 0) {
 		outstream = stdout;
 	} else {
-		outstream = fopen(outfile, &mode);
+		outstream = fopen(outfile, mode);
 		if(outstream == NULL) {
 			fprintf(stderr, "Error opening output file %s.\n", outfile);
 			exit(-1);
@@ -266,14 +266,14 @@ int outmaxheight(struct graph *G, char *outfile, char mode) {
 /*
  * Output maximal degree
  */
-int outmaxdeg(struct graph *G, char *outfile, char mode) {
+int outmaxdeg(struct graph *G, char *outfile, char *mode) {
 	FILE *outstream = NULL;	
 
 	// open output file if necessary
 	if(outfile == NULL || strlen(outfile) == 0) {
 		outstream = stdout;
 	} else {
-		outstream = fopen(outfile, &mode);
+		outstream = fopen(outfile, mode);
 		if(outstream == NULL) {
 			fprintf(stderr, "Error opening output file %s.\n", outfile);
 			exit(-1);
@@ -296,7 +296,7 @@ int outmaxdeg(struct graph *G, char *outfile, char mode) {
 /*
  * Write a sequence of values to a file or stdout
  */
-int outseq(void *seq, INT size, char *outfile, int format, char mode) {
+int outseq(void *seq, INT size, char *outfile, int format, char *mode) {
 	FILE *outstream = NULL;	
 	INT i;
 
@@ -304,7 +304,7 @@ int outseq(void *seq, INT size, char *outfile, int format, char mode) {
 	if(outfile == NULL || strlen(outfile) == 0) {
 		outstream = stdout;
 	} else {
-		outstream = fopen(outfile, &mode);
+		outstream = fopen(outfile, mode);
 		if(outstream == NULL) {
 			fprintf(stderr, "Error opening output file %s.\n", outfile);
 			exit(-1);
@@ -364,7 +364,7 @@ int outseq(void *seq, INT size, char *outfile, int format, char mode) {
 
 
 // output closeness centrality 
-int outcent(struct graph *G, char *outfile, char mode) {
+int outcent(struct graph *G, char *outfile, char *mode) {
 	INT i;
 	double num = (double) (G->num-1);
 	FILE *outstream = NULL;
@@ -384,7 +384,7 @@ int outcent(struct graph *G, char *outfile, char mode) {
 	if(outfile == NULL || strlen(outfile) == 0) {
 		outstream = stdout;
 	} else {
-		outstream = fopen(outfile, &mode);
+		outstream = fopen(outfile, mode);
 		if(outstream == NULL) {
 			fprintf(stderr, "Error opening output file.\n");
 			exit(-1);

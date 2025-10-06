@@ -22,40 +22,40 @@ struct cmdarg
 	char *outfile;				// file to which we write graph
 	int Toutfile;				// has value been set by the user?
 	int Aoutfile;				// does filename contain %?
-	char Woutfile;				// write mode ('w' / 'a' for write / append)
+	char Woutfile[2];				// write mode ('w' / 'a' for write / append)
 
 
 	char *heightfile;			// file to which we write height profile
 	int Theightfile;			// has value been set by the user?
 	int Aheightfile;			// does filename contain %?
-	char Wheightfile;			// write mode ('w' / 'a' for write / append)
+	char Wheightfile[2];			// write mode ('w' / 'a' for write / append)
 
 	char *maxheightfile;			// file to which we write maximal height
 	int Tmaxheightfile;			// has value been set by the user?
 	int Amaxheightfile;			// does filename contain %?
-	char Wmaxheightfile;			// write mode ('w' / 'a' for write / append)
+	char Wmaxheightfile[2];			// write mode ('w' / 'a' for write / append)
 
 	char *maxdegfile;			// file to which we write maximal vertex degree
 	int Tmaxdegfile;			// has value been set by the user?
 	int Amaxdegfile;			// does filename contain %?
-	char Wmaxdegfile;			// write mode ('w' / 'a' for write / append)
+	char Wmaxdegfile[2];			// write mode ('w' / 'a' for write / append)
 
 	char *degfile;				// file to which we write 
 	int Tdegfile;				// has value been set by the user?
 	int Adegfile;				// does filename contain %?
-	char Wdegfile;				// write mode ('w' / 'a' for write / append)
+	char Wdegfile[2];				// write mode ('w' / 'a' for write / append)
 
 
 	char *profile;				// file to which we write outdegree statistics
 	int Tprofile;				// has value been set by the user?
 	int Aprofile;				// does filename contain %?
-	char Wprofile;				// write mode ('w' / 'a' for write / append)
+	char Wprofile[2];				// write mode ('w' / 'a' for write / append)
 
 	char *centfile;				// file to which we write closeness centrality
 						// of vertices
 	int Tcentfile;				// has value been set by the user?
 	int Acentfile;				// does filename contain %?
-	char Wcentfile;				// write mode ('w' / 'a' for write / append)
+	char Wcentfile[2];				// write mode ('w' / 'a' for write / append)
 
 	char *infile;				// file from which we read the graph
 	int Tinfile;				// has value been set by the user?
@@ -405,31 +405,38 @@ int getcmdargs(struct cmdarg *comarg, int argc, char **argv) {
 	// Check for each output filename whether it contains a % symbol
 	if( comarg->Toutfile ) {
 		comarg->Aoutfile = checkper(comarg->outfile);
-		comarg->Woutfile = (comarg->Tnum && !(comarg->Aoutfile)) ?'a' :'w';
+		comarg->Woutfile[0] = (comarg->Tnum && !(comarg->Aoutfile)) ?'a' :'w';
+		comarg->Woutfile[1] = 0;
 	}
 	if( comarg->Tprofile ) {
 		comarg->Aprofile = checkper(comarg->profile);
-		comarg->Wprofile = (comarg->Tnum && !(comarg->Aprofile)) ?'a' :'w';
+		comarg->Wprofile[0] = (comarg->Tnum && !(comarg->Aprofile)) ?'a' :'w';
+		comarg->Wprofile[1] = 0;
 	}
 	if( comarg->Tcentfile ) {
 		comarg->Acentfile = checkper(comarg->centfile);
-		comarg->Wcentfile = (comarg->Tnum && !(comarg->Acentfile)) ?'a' :'w';
+		comarg->Wcentfile[0] = (comarg->Tnum && !(comarg->Acentfile)) ?'a' :'w';
+		comarg->Wcentfile[1] = 0;
 	}
 	if( comarg->Tdegfile ) {
 		comarg->Adegfile = checkper(comarg->degfile);
-		comarg->Wdegfile = (comarg->Tnum && !(comarg->Adegfile)) ?'a' :'w';
+		comarg->Wdegfile[0] = (comarg->Tnum && !(comarg->Adegfile)) ?'a' :'w';
+		comarg->Wdegfile[1] = 0;
 	}
 	if( comarg->Tmaxdegfile ) {
 		comarg->Amaxdegfile = checkper(comarg->maxdegfile);
-		comarg->Wmaxdegfile = (comarg->Tnum && !(comarg->Amaxdegfile)) ?'a' :'w';
+		comarg->Wmaxdegfile[0] = (comarg->Tnum && !(comarg->Amaxdegfile)) ?'a' :'w';
+		comarg->Wmaxdegfile[1] = 0;
 	}
 	if( comarg->Theightfile ) {
 		comarg->Aheightfile = checkper(comarg->heightfile);
-		comarg->Wheightfile = (comarg->Tnum && !(comarg->Aheightfile)) ?'a' :'w';
+		comarg->Wheightfile[0] = (comarg->Tnum && !(comarg->Aheightfile)) ?'a' :'w';
+		comarg->Wheightfile[1] = 0;
 	}
 	if( comarg->Tmaxheightfile ) {
 		comarg->Amaxheightfile = checkper(comarg->maxheightfile);
-		comarg->Wmaxheightfile = (comarg->Tnum && !(comarg->Amaxheightfile)) ?'a' :'w';
+		comarg->Wmaxheightfile[0] = (comarg->Tnum && !(comarg->Amaxheightfile)) ?'a' :'w';
+		comarg->Wmaxheightfile[1] = 0;
 	}
 
 	return 0;

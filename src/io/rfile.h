@@ -6,7 +6,7 @@ int rfile(struct cmdarg *comarg) {
 	struct graph *G;
 	INT *degprofile;
 
-
+	char mode[2]="w";
 
 
 	/* read graph from file */
@@ -28,35 +28,35 @@ int rfile(struct cmdarg *comarg) {
 	if( comarg->Tprofile ) {
 		degprofile = makedegprofile(G);	// assumes that the deg parameters
 										// have already been set
-		outdegprofile(degprofile, G->num, comarg->profile, 'w');
+		outdegprofile(degprofile, G->num, comarg->profile, mode);
 		free(degprofile);
 	}
 	
 	/* output degree sequence if requested */
 	if( comarg->Tdegfile ) {
-		outdegseq(G, comarg->degfile, 'w');
+		outdegseq(G, comarg->degfile, mode);
 	}
 
 	/* output maximum degree if requested */
 	if( comarg->Tmaxdegfile ) {
-		outmaxdeg(G, comarg->maxdegfile, 'w');
+		outmaxdeg(G, comarg->maxdegfile, mode);
 	}
 
 	/* output height sequence if requested */
 	if( comarg->Theightfile ) {
-		outheightseq(G, comarg->heightfile, 'w');
+		outheightseq(G, comarg->heightfile, mode);
 	}
 
 	/* output maximal height if requested */
 	if( comarg->Tmaxheightfile ) {
-		outmaxheight(G, comarg->maxheightfile, 'w');
+		outmaxheight(G, comarg->maxheightfile, mode);
 	}
 
 
 	/* Calculate closeness centrality if requested */
 	if( comarg->Tcentfile ) {
 		threadedcentrality(G, 0, G->num, comarg->threads);
-		outcent(G, comarg->centfile, 'w');
+		outcent(G, comarg->centfile, mode);
 	}
 
 
